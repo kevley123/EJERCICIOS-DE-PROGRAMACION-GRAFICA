@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Series con Web Workers</title>
+  <style>
+    /* Variables de colores */
+    :root {
+      --naranja-pastel: #ffd8c9;
+      --naranja-medio: #ffb08f;
+      --naranja-oscuro: #ff8a65;
+      --morado-pastel: #e6d7ff;
+      --morado-medio: #c9b2ff;
+      --morado-oscuro: #a68aff;
+      --texto-oscuro: #333;
+      --fondo: #f9f5ff;
+      --sombra: rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilos generales */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, var(--morado-pastel) 0%, var(--naranja-pastel) 100%);
+      color: var(--texto-oscuro);
+      line-height: 1.6;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .contenedor-principal {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 15px 30px var(--sombra);
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--morado-oscuro);
+      margin-bottom: 30px;
+      font-size: 2.5rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    h2, h3 {
+      color: var(--morado-oscuro);
+      margin: 25px 0 15px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    h2::after, h3::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 3px;
+      background: linear-gradient(to right, var(--naranja-oscuro), var(--morado-oscuro));
+      border-radius: 3px;
+    }
+
+    /* Contenedores de secciones */
+    .seccion {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 20px var(--sombra);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      border: 1px solid var(--morado-pastel);
+    }
+
+    .seccion:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px var(--sombra);
+    }
+
+    /* Formularios y controles */
+    .grupo-formulario {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--morado-oscuro);
+    }
+
+    input[type="number"],
+    input[type="text"],
+    textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid var(--morado-pastel);
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    input[type="number"]:focus,
+    input[type="text"]:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--morado-medio);
+      box-shadow: 0 0 0 3px rgba(166, 138, 255, 0.2);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    button {
+      background: linear-gradient(45deg, var(--naranja-medio), var(--naranja-oscuro));
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(255, 138, 101, 0.2);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(255, 138, 101, 0.3);
+      background: linear-gradient(45deg, var(--naranja-oscuro), var(--naranja-medio));
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    /* Áreas de resultados */
+    pre {
+      background-color: var(--morado-pastel);
+      border-radius: 8px;
+      padding: 15px;
+      overflow-x: auto;
+      margin-top: 15px;
+      min-height: 100px;
+      border-left: 4px solid var(--morado-oscuro);
+      transition: all 0.3s ease;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+
+    pre.cargando {
+      background: linear-gradient(90deg, var(--morado-pastel) 0%, var(--naranja-pastel) 50%, var(--morado-pastel) 100%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+      color: transparent;
+    }
+
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Responsive */
+    @media (min-width: 768px) {
+      .contenedor-flex {
+        display: flex;
+        gap: 30px;
+      }
+      
+      .seccion {
+        flex: 1;
+      }
+    }
+
+    /* Animaciones */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .seccion {
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    .seccion:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: var(--morado-oscuro);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="contenedor-principal">
+    <h1>Operaciones con Web Workers</h1>
+    
+    <div class="contenedor-flex">
+      <div class="seccion">
+        <h2>Generar Números Primos en Paralelo</h2>
+        
+        <div class="grupo-formulario">
+          <label for="limite">Hasta qué número quieres los primos:</label>
+          <input type="number" id="limite" value="50" min="2">
+        </div>
+        
+        <button id="generar">Generar Primos</button>
+
+        <h3>Resultados:</h3>
+        <pre id="salida">Los resultados aparecerán aquí...</pre>
+      </div>
+
+      <div class="seccion">
+        <h2>Búsqueda binaria de una palabra</h2>
+        
+        <div class="grupo-formulario">
+          <label for="parrafo">Inserta el texto:</label>
+          <textarea id="parrafo" placeholder="Escribe o pega tu texto aquí..."></textarea>
+        </div>
+        
+        <div class="grupo-formulario">
+          <label for="palabra">Palabra a buscar:</label>
+          <input type="text" id="palabra" placeholder="Escribe la palabra a buscar">
+        </div>
+        
+        <button id="buscar">Buscar Palabra</button>
+
+        <h3>Resultado búsqueda:</h3>
+        <pre id="resultadoBusqueda">El resultado de la búsqueda aparecerá aquí...</pre>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Enlace al archivo JavaScript externo -->
+  <script src="app.js"></script>
+</body>
+</html>
