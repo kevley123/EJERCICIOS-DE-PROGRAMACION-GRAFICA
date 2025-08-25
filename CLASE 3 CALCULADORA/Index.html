@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+    <link rel="stylesheet" href="style.css">
+<head>
+    <meta charset="UTF-8">
+    <title>Reto: Aplicación Interactiva</title>
+    <script src="loader.js" defer></script>
+    <script src="calculator.js" defer></script>
+    <script src="validator.js" defer></script>
+    <script src="ui.js" defer></script>
+    <script src="app.js" defer></script>
+    </head>
+<body>
+    <h1>Calculadora Interactiva</h1>
+    <div id="app">
+        <input type="number" id="num1" placeholder="Número 1">
+        <input type="number" id="num2" placeholder="Número 2">
+        <select id="operation">
+            <option value="add">Sumar</option>
+            <option value="subtract">Restar</option>
+            <option value="multiply">Multiplicar</option>
+            <option value="divide">Dividir</option>
+        </select>
+        <button id="calculate">Calcular</button>
+        <p id="result"></p>
+    </div>
+</body>
+</html>

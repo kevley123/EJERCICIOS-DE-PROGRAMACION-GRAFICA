@@ -1,0 +1,104 @@
+/* Fondo general con estilo circo y formas 3D */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #ff1e56, #ffac41, #00b4d8, #8338ec);
+    background-size: 400% 400%;
+    animation: fondoAnimado 10s ease infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+}
+
+/* Animación del fondo degradado */
+@keyframes fondoAnimado {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Título estilo circo */
+h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-shadow: 3px 3px 0px #000, 6px 6px 0px rgba(0,0,0,0.3);
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+/* Contenedor de la calculadora */
+#app {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 25px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    width: 320px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Inputs y select con estilo 3D */
+input, select {
+    width: 90%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 12px;
+    outline: none;
+    font-size: 1rem;
+    text-align: center;
+    background: white;
+    color: #333;
+    box-shadow: 0 4px 0px #00000055, inset 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Botón estilo circo */
+button {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(145deg, #ff1e56, #ffac41);
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+    box-shadow: 0 6px 0px #00000055;
+}
+
+button:hover {
+    background: linear-gradient(145deg, #ff477e, #ff6a00);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 0px #00000055;
+}
+
+/* Resultado */
+#result {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-top: 15px;
+    color: yellow;
+    text-shadow: 2px 2px 0px black;
+}
+
+/* 🎪 Formas flotantes estilo circo */
+.circo-shape {
+    position: absolute;
+    border-radius: 50%;
+    opacity: 0.6;
+    filter: blur(2px);
+    z-index: 1;
+}
+
+/* Colores y tamaños variados */
+.shape1 { width: 120px; height: 120px; background: #ff1e56; top: 10%; left: 15%; box-shadow: 5px 10px 15px rgba(0,0,0,0.4);}
+.shape2 { width: 80px; height: 80px; background: #ffac41; top: 70%; left: 60%; box-shadow: -5px -10px 15px rgba(0,0,0,0.4);}
+.shape3 { width: 150px; height: 150px; background: #00b4d8; top: 40%; left: 75%; box-shadow: 8px 8px 20px rgba(0,0,0,0.4);}
+.shape4 { width: 100px; height: 100px; background: #8338ec; top: 80%; left: 20%; box-shadow: -8px 8px 20px rgba(0,0,0,0.4);}
