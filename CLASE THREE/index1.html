@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Figuras 3D con THREE</title>
+    <style>
+        body { 
+            margin: 0; 
+            overflow: hidden;
+            font-family: 'Arial', sans-serif;
+        }
+        .info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #fff;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 14px;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">Figuras 3D con THREE</div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+    
+    <script>
+        // camara y renderizador jsjs
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // controles para mover y rotar
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        function getPastelColor() {
+            const hue = Math.floor(Math.random() * 360);
+            return new THREE.Color(`hsl(${hue}, 70%, 80%)`);
+        }
+
+        // figuras
+        const geometries = [
+            new THREE.BoxGeometry(1, 1, 1),
+            new THREE.SphereGeometry(0.7, 24, 24),
+            new THREE.TorusGeometry(0.6, 0.2, 16, 50),
+            new THREE.ConeGeometry(0.7, 1.2, 6),
+            new THREE.CylinderGeometry(0.4, 0.8, 1.5, 16),
+            new THREE.DodecahedronGeometry(0.8, 0),
+            new THREE.OctahedronGeometry(0.8, 0)
+        ];
+
+        const figures = geometries.map((geo, i) => {
+            const material = new THREE.MeshPhongMaterial({ 
+                color: getPastelColor(),
+                shininess: 70,
+                specular: 0x222222
+            });
+            
+            const mesh = new THREE.Mesh(geo, material);
+            const angle = (i / geometries.length) * Math.PI * 2;
+            const radius = 5;
+            
+            mesh.position.set(
+                Math.cos(angle) * radius,
+                Math.sin(angle) * 0.5,
+                Math.sin(angle) * radius
+            );
+            
+            mesh.rotation.set(
+                Math.random() * 0.2,
+                Math.random() * 0.2,
+                Math.random() * 0.2
+            );
+            
+            scene.add(mesh);
+            return mesh;
+        });
+
+        // animacion
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+        
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(5, 10, 7);
+        scene.add(directionalLight);
+
+        // camara (importante)
+        camera.position.set(0, 4, 10);
+        controls.update();
+
+        scene.background = new THREE.Color(0xf0f0ff);
+
+        const clock = new THREE.Clock();
+        
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            const delta = clock.getDelta();
+            const time = clock.getElapsedTime();
+            
+            figures.forEach((fig, index) => {
+                fig.rotation.x += 0.005 * (index * 0.2 + 1);
+                fig.rotation.y += 0.008 * (index * 0.2 + 1);
+                if (Math.floor(time * 2) % 10 === index % 10) {
+                    fig.material.color.copy(getPastelColor());
+                }
+                fig.position.y += Math.sin(time + index) * 0.003;
+            });
+            
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        
+        animate();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+    </script>
+</body>
+</html>
