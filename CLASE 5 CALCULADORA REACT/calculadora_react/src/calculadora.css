@@ -1,0 +1,137 @@
+.calculator-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+  
+  .calculator {
+    width: 320px;
+    background-color: #2c3e50;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    padding: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .display {
+    background-color: #34495e;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: right;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+    min-height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .previous-operation {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 1rem;
+    min-height: 1.2rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .current-value {
+    color: #ecf0f1;
+    font-size: 2.5rem;
+    font-weight: 300;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+  
+  .buttons button {
+    padding: 18px 0;
+    font-size: 1.4rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background-color: #34495e;
+    color: #ecf0f1;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .buttons button:hover {
+    background-color: #3d566e;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  }
+  
+  .buttons button:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Botones de función: C, ⌫, ± */
+  .buttons button.function {
+    background-color: #16a085;
+    color: white;
+  }
+  
+  .buttons button.function:hover {
+    background-color: #1abc9c;
+  }
+  
+  /* Operadores: +, −, ×, ÷ */
+  .buttons button.operator {
+    background-color: #e67e22;
+    color: white;
+  }
+  
+  .buttons button.operator:hover {
+    background-color: #f39c12;
+  }
+  
+  /* Botón de igual */
+  .buttons button.equals {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .buttons button.equals:hover {
+    background-color: #2980b9;
+  }
+  
+  /* Botón cero más ancho */
+  .buttons button.zero {
+    grid-column: span 2;
+  }
+  
+  /* Efecto para teclas presionadas */
+  .buttons button:focus {
+    outline: none;
+  }
+  
+  /* Responsive para pantallas pequeñas */
+  @media (max-width: 350px) {
+    .calculator {
+      width: 280px;
+      padding: 15px;
+    }
+    
+    .buttons button {
+      padding: 15px 0;
+      font-size: 1.2rem;
+    }
+    
+    .current-value {
+      font-size: 2rem;
+    }
+  }
