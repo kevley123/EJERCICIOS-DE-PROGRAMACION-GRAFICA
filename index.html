@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Desbalance Final</title>
+</head>
+<body>
+  <h2>Desbalance Final (Cofres)</h2>
+
+  <label>Ingrese K:</label>
+  <input type="text" id="kInput" placeholder="Ej: 5" />
+  <button onclick="resolver()">Calcular</button>
+
+  <h3>Resultado:</h3>
+  <p id="resultado">---</p>
+
+  <script>
+    function resolver() {
+      const kStr = document.getElementById("kInput").value.trim();
+
+      if (!kStr || !/^\d+$/.test(kStr)) {
+        document.getElementById("resultado").textContent = "Ingrese un entero válido.";
+        return;
+      }
+
+      const K = BigInt(kStr);
+      const n = K / 2n;
+      const plata = (K * (K + 1n)) / 2n;
+      const oro = n * (n + 1n);
+      const diff = plata >= oro ? (plata - oro) : (oro - plata);
+
+      document.getElementById("resultado").textContent = diff.toString();
+    }
+  </script>
+</body>
+</html>
